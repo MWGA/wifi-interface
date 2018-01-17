@@ -1,21 +1,25 @@
 #!/usr/bin/env python
 
-from scapy.all import send, IP, ICMP
 from scapy.all import *
 
-## Create a Packet Counter
+## Counter and wifi interface
 counter = 0
 interface = "wlx98ded0054dc9"
 
 
-## Define our Custom Action function
+## Handling the packet
 def receive_encapsulate(packet):
     global counter
     counter += 1
+    # Dump into pcap file
     wrpcap('filtered.pcap', packet, append=True)
-    print counter
-    send(packet, iface="eth0")
+    pad_len = 60 - len(packet)
+    pad = Padding()
+    pad.load = '\x00' * pad_len
+    packet = packet / pad
+    # Send packet via virtual interface
+    sendp(packet, iface="veth0")
 
 
-## Setup sniff, filtering for IP traffic
+## Setup sniff
 sniff(iface=interface, prn=receive_encapsulate)
