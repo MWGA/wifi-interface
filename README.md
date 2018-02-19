@@ -1,11 +1,11 @@
 # wifi-interface
 This program interacsts with the 802.11 NIC and forwards 802.11 frames to OVS
 
-####Requirements:
+#### Requirements:
 * scapy - python library
 * WiFi interface with monitor mode support
 
-####Content:
+#### Content:
 * constants.py - contains constants used in project
 * createVethPair.sh - bash script to create virtual interfaces that communicate with OVS
 * receiveProcess.py - process that receives 802.11 frames, encapsulate them into Ethernet and sends to OVS
