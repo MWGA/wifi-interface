@@ -9,3 +9,5 @@ DEVICE_NAME = 'wlx98ded0054dc9'
 SSID = 'MWGA'
 
 RATES = "\x0c\x12\x18\x24\x30\x48\x60\x6c"
+
+BEACON_INTERVAL = 0.100

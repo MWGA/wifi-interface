@@ -16,19 +16,37 @@ def packet_handler(packet):
                     dot11_probe_resp()
 
 
+
+
 ## Build Probe Response
 def dot11_probe_resp():
-    # TODO - make working probe response
-    probe_response_packet = RadioTap(len=18, present='Flags+Rate+Channel+dBm_AntSignal+Antenna',
-                                     notdecoded='\x00\x6c' + struct.pack("<h", 2407) + '\xc0\x00\xc0\x01\x00\x00') \
-                            / Dot11(subtype=5, addr1=constants.BEACON_ADDR1, addr2=constants.BEACON_ADDR2,
-                                    addr3=constants.BEACON_ADDR3,
-                                    SC=1000) \
-                            / Dot11ProbeResp(timestamp=(time() * 1000000),
-                                             beacon_interval=0x0064, cap=0x2104) \
-                            / Dot11Elt(ID='SSID', info=constants.SSID) \
-                            / Dot11Elt(ID='Rates', info=constants.RATES) \
-                            / Dot11Elt(ID='DSset', info=chr(1))
+    # TODO - make better fields (https://github.com/dinosec/iStupid/blob/master/iStupid.py)
+
+    # Initial beacon timestamp
+    ts = 00000000L
+
+    # Privacy setting on: probe response header
+    probresp_header = Dot11ProbeResp(timestamp=ts, beacon_interval=constants.BEACON_INTERVAL, \
+                                     cap="short-preamble+short-slot+privacy")
+
+    # Rates header
+    rates_header = Dot11Elt(ID="Rates", info='\x82\x84\x8b\x16')
+
+    probe_response_packet = RadioTap()/Dot11(addr1='da:a1:19:cb:4f:5f',addr2=constants.BEACON_ADDR2,addr3=constants.BEACON_ADDR3)/\
+        probresp_header/\
+        Dot11Elt(ID="SSID",info=constants.SSID)/\
+        Dot11Elt(ID="DSset",info='x03')/\
+        rates_header/\
+        Dot11Elt(ID=221,info="\x50\x6F\x9A\x09"+   # P2P
+        	"\x02"+"\02\x00"+"\x21\x00"+       # P2P Capabilities
+        	"\x0D"+"\x1B\x00"+
+                mac2str(constants.BEACON_ADDR2)+
+                "\x01\x88"+
+                "\x00\x0A\x00\x50\xF2\x04\x00\x05"+
+                "\x00"+
+                "\x10\x11"+
+                "\x00\x06"+
+                "fafa\xFA\xFA")                    # P2P Device Info
 
     sendp(probe_response_packet, iface=device, verbose=False)
 

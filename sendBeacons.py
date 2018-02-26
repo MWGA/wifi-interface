@@ -1,6 +1,7 @@
 from scapy.all import Dot11, Dot11Beacon, Dot11Elt, RadioTap, sendp, hexdump
 import constants
 
+# TODO - make better fields
 ## Define fields
 netSSID = constants.SSID  # SSID
 device = constants.DEVICE_NAME  # Interface name here
@@ -31,4 +32,4 @@ raw_input("\nPress enter to start\n")
 print 'Press CTRL+C to Abort'
 
 ## Generate frames with interval 0.1 second
-sendp(frame, iface=device, inter=0.100, loop=1)
+sendp(frame, iface=device, inter=constants.BEACON_INTERVAL, loop=1)
