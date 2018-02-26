@@ -7,6 +7,7 @@ import constants
 counter = 0
 device = constants.DEVICE_NAME
 
+
 ## Handling the packet
 def receive_encapsulate(packet):
     global counter
@@ -15,7 +16,7 @@ def receive_encapsulate(packet):
     wrpcap('monitor_capture.pcap', packet, append=False)
 
     # Add Ethernet padding - TODO make better padding for this solution
-    if packet.haslayer(Dot11): # 802.11
+    if packet.haslayer(Dot11):  # 802.11
         pad_len = 60 - len(packet)
         pad = Padding()
         pad.load = '\x00' * pad_len
@@ -23,6 +24,7 @@ def receive_encapsulate(packet):
 
     # Send packet via virtual interface
     sendp(packet, iface="veth0")
+
 
 print 'Press CTRL+C to Abort'
 
