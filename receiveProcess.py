@@ -23,7 +23,7 @@ def receive_encapsulate(packet):
         packet = packet / pad
 
     # Send packet via virtual interface
-    sendp(packet, iface="veth0")
+    sendp(packet, iface=constants.TO_OVS_DEVICE)
 
 
 print 'Press CTRL+C to Abort'

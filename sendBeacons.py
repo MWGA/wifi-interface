@@ -8,7 +8,7 @@ device = constants.DEVICE_NAME  # Interface name here
 
 dot11 = Dot11(type=0, subtype=8, addr1=constants.BEACON_ADDR1,
               addr2=constants.BEACON_ADDR2, addr3=constants.BEACON_ADDR3)
-beacon = Dot11Beacon(cap='ESS+privacy')
+beacon = Dot11Beacon(cap="short-preamble+short-slot+ESS")
 essid = Dot11Elt(ID='SSID', info=netSSID, len=len(netSSID))
 rsn = Dot11Elt(ID='RSNinfo', info=(
     '\x01\x00'  # RSN Version 1
