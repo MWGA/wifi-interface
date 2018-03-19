@@ -39,6 +39,7 @@ class LVAP(object):
                                                                                                    self.SSID, self.WTP))
 
 
+# Testing
 lv = LVAP('10.10.10.10', 'ff:ff:ff:ff:ff:ff', '02:02:02:02:02:02', constants.DEVICE_NAME)
 
 lv.show()

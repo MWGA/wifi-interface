@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from scapy.all import *
+
 import constants
 
 ## Wifi interface
@@ -25,7 +26,7 @@ def packet_handler(packet):
 
 ## Build Auth Response
 def dot11_assoc_resp(destaddr):
-    # TODO - diiscuss this
+    # TODO - make better fields
     probresp_header = Dot11ProbeResp(timestamp=uptime(), beacon_interval=constants.BEACON_INTERVAL, \
                                      cap="short-preamble+short-slot+privacy")
 

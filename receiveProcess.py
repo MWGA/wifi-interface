@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 from scapy.all import *
+
 import constants
+import utils
 
 ## Counter and wifi interface
 counter = 0
@@ -17,13 +19,11 @@ def receive_encapsulate(packet):
 
     # Add Ethernet padding - TODO make better padding for this solution
     if packet.haslayer(Dot11):  # 802.11
-        pad_len = 60 - len(packet)
-        pad = Padding()
-        pad.load = '\x00' * pad_len
-        packet = packet / pad
+        if packet.type == 2:
+            packetout = utils.addToEth(packet)
 
     # Send packet via virtual interface
-    sendp(packet, iface=constants.TO_OVS_DEVICE)
+    sendp(packetout, iface=constants.TO_OVS_DEVICE, verbose=False)
 
 
 print 'Press CTRL+C to Abort'

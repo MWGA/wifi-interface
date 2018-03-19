@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from scapy.all import *
+
 import constants
 
 ## Wifi interface
@@ -17,7 +18,7 @@ def packet_handler(packet):
 
 ## Build Auth Response
 def dot11_auth_resp():
-    # TODO - diiscuss this
+    # TODO - send auth response
     auth_response_packet = ''
 
     sendp(auth_response_packet, iface=device, verbose=False)

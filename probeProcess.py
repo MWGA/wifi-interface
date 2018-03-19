@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 from scapy.all import *
+
 import constants
+import utils
 
 ## Wifi interface, time
 device = constants.DEVICE_NAME
@@ -19,9 +21,13 @@ def packet_handler(packet):
     if packet.haslayer(Dot11):  # 802.11
         if packet.type == 0 and packet.subtype == constants.PROBE_REQ:  # Probe request
             if packet.ID == 0:
-                if packet.info == '':  # Our SSID / TODO - will be replaced with constants.SSID
-                    print('.')
+                if packet.info == '':
                     dot11_probe_resp(packet.addr2)
+                elif packet.info == constants.SSID:
+                    packetout = utils.addToUDP(packet)  # TODO - discuss UDP layer
+
+                    # Send packet via virtual interface
+                    sendp(packetout, iface=constants.TO_OVS_DEVICE, verbose=False)
 
 
 ## Build Probe Response
