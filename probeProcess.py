@@ -24,7 +24,8 @@ def packet_handler(packet):
                 if packet.info == '':
                     dot11_probe_resp(packet.addr2)
                 elif packet.info == constants.SSID:
-                    packetout = utils.addToUDP(packet)  # TODO - discuss UDP layer
+                    print('probe')
+                    packetout = utils.addToEth(packet)
 
                     # Send packet via virtual interface
                     sendp(packetout, iface=constants.TO_OVS_DEVICE, verbose=False)
@@ -40,7 +41,7 @@ def dot11_probe_resp(destaddr):
                                      cap="short-preamble+short-slot+privacy")
 
     # Rates header
-    rates_header = Dot11Elt(ID="Rates", info='\x82\x84\x8b\x16')
+    rates_header = Dot11Elt(ID="Rates", info=constants.RATES)
 
     probe_response_packet = (RadioTap(present=18479L) /
                              Dot11(addr2=constants.BSSID, addr3=constants.BSSID, addr1=destaddr, FCfield=8L) /
@@ -50,7 +51,7 @@ def dot11_probe_resp(destaddr):
                              Dot11Elt(info='\x01', ID=3, len=1) /
                              Dot11Elt(info='\x00', ID=42, len=1) /
                              Dot11Elt(
-                                 info='\x01\x00\x00\x0f\xac\x02\x02\x00\x00\x0f\xac\x02\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x02(\x00',
+                                 info=constants.RSN,
                                  ID=48, len=24) /
                              Dot11Elt(info='H`l', ID=50, len=3))
 

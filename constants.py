@@ -8,7 +8,7 @@ BROADCAST_ADDR = 'ff:ff:ff:ff:ff:ff'
 BSSID = 'b8:38:61:99:1a:af'
 
 # Devices
-DEVICE_NAME = 'wlx98ded0054dc9'
+DEVICE_NAME = 'wlx98ded0056388'
 
 TO_OVS_DEVICE = 'veth0'
 IP_SRC = '100.100.100.100'
@@ -21,7 +21,8 @@ DST_PORT = '5000'
 # SSID
 SSID = 'MWGA'
 
-RATES = "\x0c\x12\x18\x24\x30\x48\x60\x6c"
+RATES = '\x82\x84\x8b\x16'
+RSN = '\x01\x00\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x04\x01\x00\x00\x0f\xac\x01\x28\x00'
 
 BEACON_INTERVAL = 0.100
 

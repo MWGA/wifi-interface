@@ -30,7 +30,7 @@ def dot11_assoc_resp(destaddr):
     probresp_header = Dot11ProbeResp(timestamp=uptime(), beacon_interval=constants.BEACON_INTERVAL, \
                                      cap="short-preamble+short-slot+privacy")
 
-    rates_header = Dot11Elt(ID="Rates", info='\x82\x84\x8b\x16')
+    rates_header = Dot11Elt(ID="Rates", info=constants.RATES)
 
     assoc_response_packet = (RadioTap(present=18479L) /
                              Dot11(subtype=0x01, addr2=constants.BSSID, addr3=constants.BSSID, addr1=destaddr,
