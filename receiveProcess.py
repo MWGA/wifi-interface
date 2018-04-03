@@ -14,13 +14,14 @@ device = constants.DEVICE_NAME
 def receive_encapsulate(packet):
     global counter
     counter += 1
-    # Dump into pcap file
-    wrpcap('monitor_capture.pcap', packet, append=False)
+    packetout = ''
 
-    # Add Ethernet padding - TODO make better padding for this solution
+    # Add Ethernet padding
     if packet.haslayer(Dot11):  # 802.11
         if packet.type == 2:
             packetout = utils.addToEth(packet)
+            # Dump into pcap file
+            wrpcap('monitor_capture.pcap', packetout, append=True)
 
     # Send packet via virtual interface
     sendp(packetout, iface=constants.TO_OVS_DEVICE, verbose=False)
