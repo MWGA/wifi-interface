@@ -26,10 +26,11 @@ class LVAP(object):
     """Light virtual Access Point class"""
     SSID = constants.SSID
 
-    def __init__(self, IPaddress, MACaddress, BSSID, WTP):
+    def __init__(self, IPaddress, MACaddress, BSSID, SSID, WTP):
         self.IPaddress = IPvalid(IPaddress)
         self.MACaddress = MACvalid(MACaddress)
         self.BSSID = MACvalid(BSSID)
+        self.SSID = SSID
         self.WTP = WTP
 
     def show(self):
@@ -38,8 +39,17 @@ class LVAP(object):
                                                                                                    self.BSSID,
                                                                                                    self.SSID, self.WTP))
 
+    {
+        'id': 2,
+        'title': u'Learn Python',
+        'description': u'Need to find a good Python tutorial on the web',
+        'done': False
+    }
+    def to_json(self):
+        return("{ 'ip':"+self.IPaddress+",'mac': "+self.MACaddress+",'bssid':"+self.BSSID+",'ssid':"+self.SSID+",'wtp':"+self.WTP+"}")
+
 
 # Testing
-lv = LVAP('10.10.10.10', 'ff:ff:ff:ff:ff:ff', '02:02:02:02:02:02', constants.DEVICE_NAME)
+lv = LVAP('10.10.10.10', 'ff:ff:ff:ff:ff:ff', '02:02:02:02:02:02', "nove ssid", constants.DEVICE_NAME)
 
 lv.show()
