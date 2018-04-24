@@ -39,14 +39,16 @@ class LVAP(object):
                                                                                                    self.BSSID,
                                                                                                    self.SSID, self.WTP))
 
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web',
-        'done': False
-    }
     def to_json(self):
-        return("{ 'ip':"+self.IPaddress+",'mac': "+self.MACaddress+",'bssid':"+self.BSSID+",'ssid':"+self.SSID+",'wtp':"+self.WTP+"}")
+        return('''
+        '{ 
+          'ip':"'''+self.IPaddress+'''",
+          'mac': "'''+self.MACaddress+'''",
+          'bssid':"'''+self.BSSID+'''",
+          'ssid':"'''+self.SSID+'''",
+          'wtp':"'''+self.WTP+'''"
+          },
+        ''')
 
 
 # Testing
