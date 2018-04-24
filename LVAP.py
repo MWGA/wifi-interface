@@ -1,3 +1,4 @@
+import json
 import re
 import socket
 
@@ -40,15 +41,8 @@ class LVAP(object):
                                                                                                    self.SSID, self.WTP))
 
     def to_json(self):
-        return('''
-        '{ 
-          'ip':"'''+self.IPaddress+'''",
-          'mac': "'''+self.MACaddress+'''",
-          'bssid':"'''+self.BSSID+'''",
-          'ssid':"'''+self.SSID+'''",
-          'wtp':"'''+self.WTP+'''"
-          },
-        ''')
+        return json.JSONEncoder().encode(
+            [{"ip": self.IPaddress, "mac": self.MACaddress, "bssid": self.BSSID, "ssid": self.SSID, "wtp": self.WTP}])
 
 
 # Testing
