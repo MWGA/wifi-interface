@@ -3,7 +3,7 @@
 from scapy.all import *
 
 import constants
-import utils
+import restClient
 
 ## Wifi interface, time
 device = constants.DEVICE_NAME
@@ -25,10 +25,8 @@ def packet_handler(packet):
                     dot11_probe_resp(packet.addr2)
                 elif packet.info == constants.SSID:
                     print('probe')
-                    packetout = utils.addToEth(packet)
-
-                    # Send packet via virtual interface
-                    sendp(packetout, iface=constants.TO_OVS_DEVICE, verbose=False)
+                    restClient.generate_lvap(packet.addr2, "WTP1")
+                    # TODO - send probe rest with new BSSID
 
 
 ## Build Probe Response
@@ -58,7 +56,6 @@ def dot11_probe_resp(destaddr):
     sendp(probe_response_packet, iface=device, verbose=False)
 
 
-print 'Press CTRL+C to Abort'
-
-## Setup sniff
-sniff(iface=device, prn=packet_handler)
+def start():
+    ## Setup sniff
+    sniff(iface=device, prn=packet_handler)
