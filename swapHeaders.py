@@ -11,11 +11,11 @@ device = constants.DEVICE_NAME
 
 
 ## Handling the packet
-def receive_encapsulate(packet):
+def removeWiFiHeaderAndAddEthernet(packet):
     global counter
     counter += 1
     packetout = ''
-
+    # TODO - remove WiFi header
     # Add Ethernet padding
     if packet.haslayer(Dot11):  # 802.11
         if packet.type == 2:
@@ -26,8 +26,3 @@ def receive_encapsulate(packet):
     # Send packet via virtual interface
     sendp(packetout, iface=constants.TO_OVS_DEVICE, verbose=False)
 
-
-print 'Press CTRL+C to Abort'
-
-## Setup sniff
-sniff(iface=device, prn=receive_encapsulate)

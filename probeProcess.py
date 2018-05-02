@@ -3,7 +3,6 @@
 from scapy.all import *
 
 import constants
-import restClient
 
 ## Wifi interface, time
 device = constants.DEVICE_NAME
@@ -14,19 +13,6 @@ ftime = time.time() * 1000000
 def uptime():
     microtime = int(round(time.time() * 1000000)) - ftime
     return microtime
-
-
-## Handling the packet
-def packet_handler(packet):
-    if packet.haslayer(Dot11):  # 802.11
-        if packet.type == 0 and packet.subtype == constants.PROBE_REQ:  # Probe request
-            if packet.ID == 0:
-                if packet.info == '':
-                    dot11_probe_resp(packet.addr2)
-                elif packet.info == constants.SSID:
-                    print('probe')
-                    restClient.generate_lvap(packet.addr2, "WTP1")
-                    # TODO - send probe rest with new BSSID
 
 
 ## Build Probe Response
@@ -54,8 +40,3 @@ def dot11_probe_resp(destaddr):
                              Dot11Elt(info='H`l', ID=50, len=3))
 
     sendp(probe_response_packet, iface=device, verbose=False)
-
-
-def start():
-    ## Setup sniff
-    sniff(iface=device, prn=packet_handler)
