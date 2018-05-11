@@ -9,6 +9,7 @@ BSSID = 'b8:38:61:99:1a:af'
 
 # Devices
 DEVICE_NAME = 'wlx98ded0056388'
+DEVICE_MAC = 'b8:38:61:99:1a:af'
 
 TO_OVS_DEVICE = 'veth0'
 IP_SRC = '100.100.100.100'

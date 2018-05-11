@@ -1,5 +1,7 @@
 from scapy.all import *
 
+import assocProcess
+import authProcess
 import constants
 import probeProcess
 import restClient
@@ -13,19 +15,25 @@ def packet_handler(packet):
             if packet.ID == 0:
                 if packet.info == '':
                     probeProcess.dot11_probe_resp(packet.addr2)
-                elif packet.info == constants.SSID:
+                elif packet.info == constants.SSID and packet.addr1 == constants.DEVICE_MAC:
                     print('probe')
-                    restClient.generate_lvap(packet.addr2, "WTP1")
+                    jsonBSSID = restClient.generate_lvap(packet.addr2, constants.DEVICE_NAME)
+                    # BSSID = jsonBSSID.json('mac')
                     # TODO - send probe response with new BSSID
         if packet.type == 0 and packet.subtype == constants.AUTH_REQ:  # Auth request
-            print ('authentication')
-            # TODO - handle authentication
+            if packet.addr1 == constants.DEVICE_MAC:
+                print ('authentication')
+                authProcess.dot11_auth_resp(packet.addr2, packet.addr1, constants.BSSID, 0, constants.DEVICE_NAME)
+                # TODO - change BSSID
         if packet.type == 0 and packet.subtype == constants.ASSOC_REQ:  # Assoc request
-            print ('association')
-            # TODO - handle association
+            if packet.addr1 == constants.DEVICE_MAC:
+                print ('association')
+                assocProcess.dot11_assoc_resp(constants.DEVICE_NAME, packet.addr1, packet.addr2, constants.BSSID)
+                # TODO - change BSSID
         if packet.type == 2:
-            print ('data')
-            swapHeaders.removeWiFiHeaderAndAddEthernet(packet)
+            if packet.addr1 == constants.DEVICE_MAC:
+                print ('data')
+                swapHeaders.removeWiFiHeaderAndAddEthernet(packet)
 
 
 def start():

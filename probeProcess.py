@@ -5,7 +5,6 @@ from scapy.all import *
 import constants
 
 ## Wifi interface, time
-device = constants.DEVICE_NAME
 ftime = time.time() * 1000000
 
 
@@ -16,7 +15,7 @@ def uptime():
 
 
 ## Build Probe Response
-def dot11_probe_resp(destaddr):
+def dot11_probe_resp(destaddr, device):
     # TODO - make better fields (https://github.com/dinosec/iStupid/blob/master/iStupid.py
     # TODO - https://github.com/0x90/wifi-scripts/blob/cde03cb610d7fd4ebd55bd8e45063895d1b06526/AP/fuzzap.py)
 

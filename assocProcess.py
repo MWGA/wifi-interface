@@ -4,8 +4,6 @@ from scapy.all import *
 
 import constants
 
-## Wifi interface
-device = constants.DEVICE_NAME
 ftime = time.time() * 1000000
 
 
@@ -15,17 +13,8 @@ def uptime():
     return microtime
 
 
-## Handling the packet
-def packet_handler(packet):
-    if packet.haslayer(Dot11):  # 802.11
-        if packet.type == 0 and packet.subtype == constants.ASSOC_REQ:  # Assoc request
-            print('assoc')
-            packet.show()
-            # dot11_assoc_resp(packet.addr2)
-
-
 ## Build Auth Response
-def dot11_assoc_resp(destaddr):
+def dot11_assoc_resp(device, receiver, sender, bssid):
     # TODO - make better fields
     probresp_header = Dot11ProbeResp(timestamp=uptime(), beacon_interval=constants.BEACON_INTERVAL, \
                                      cap="short-preamble+short-slot+privacy")
@@ -33,7 +22,7 @@ def dot11_assoc_resp(destaddr):
     rates_header = Dot11Elt(ID="Rates", info=constants.RATES)
 
     assoc_response_packet = (RadioTap(present=18479L) /
-                             Dot11(subtype=0x01, addr2=constants.BSSID, addr3=constants.BSSID, addr1=destaddr,
+                             Dot11(subtype=0x01, addr2=sender, addr3=bssid, addr1=receiver,
                                    FCfield=8L) /
                              probresp_header /
                              Dot11AssoResp(cap=0x2104, status=0, AID='') /  # self.ap.next_aid()) /
@@ -41,8 +30,3 @@ def dot11_assoc_resp(destaddr):
 
     sendp(assoc_response_packet, iface=device, verbose=False)
 
-
-print 'Press CTRL+C to Abort'
-
-## Setup sniff
-sniff(iface=device, prn=packet_handler)

@@ -1,30 +1,12 @@
 #!/usr/bin/env python
 
-from scapy.all import *
-
-import constants
-
-## Wifi interface
-device = constants.DEVICE_NAME
-
-
-## Handling the packet
-def packet_handler(packet):
-    if packet.haslayer(Dot11):  # 802.11
-        if packet.type == 0 and packet.subtype == constants.AUTH_REQ:  # Auth request
-            print('auth')
-            packet.show()
+from scapy.all import RadioTap, Dot11, Dot11Auth, sendp
 
 
 ## Build Auth Response
-def dot11_auth_resp():
-    # TODO - send auth response
-    auth_response_packet = ''
+def dot11_auth_resp(receiver, sender, bssid, sc, device):
+    auth_packet = RadioTap(present=18479L) \
+                  / Dot11(subtype=0x0B, addr1=receiver, addr2=sender, addr3=bssid, SC=sc \
+                                                                                      / Dot11Auth(seqnum=0x02))
 
-    sendp(auth_response_packet, iface=device, verbose=False)
-
-
-print 'Press CTRL+C to Abort'
-
-## Setup sniff
-sniff(iface=device, prn=packet_handler)
+    sendp(auth_packet, iface=device, verbose=False)
