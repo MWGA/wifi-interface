@@ -4,6 +4,7 @@ import socket
 
 import constants
 
+lvap_context = []
 
 ## IP address validation
 def IPvalid(IP):
@@ -45,7 +46,7 @@ class LVAP(object):
             [{"ip": self.IPaddress, "mac": self.MACaddress, "bssid": self.BSSID, "ssid": self.SSID, "wtp": self.WTP}])
 
 
-# Testing
-lv = LVAP('10.10.10.10', 'ff:ff:ff:ff:ff:ff', '02:02:02:02:02:02', "nove ssid", constants.DEVICE_NAME)
-
-lv.show()
+# # Testing
+# lv = LVAP('10.10.10.10', 'ff:ff:ff:ff:ff:ff', '02:02:02:02:02:02', "nove ssid", constants.DEVICE_NAME)
+#
+# lv.show()

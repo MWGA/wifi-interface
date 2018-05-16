@@ -14,7 +14,7 @@ def packet_handler(packet):
         if packet.type == 0 and packet.subtype == constants.PROBE_REQ:  # Probe request
             if packet.ID == 0:
                 if packet.info == '':
-                    probeProcess.dot11_probe_resp(packet.addr2)
+                    probeProcess.dot11_probe_resp(packet.addr2, constants.DEVICE_NAME)
                 elif packet.info == constants.SSID and packet.addr1 == constants.DEVICE_MAC:
                     print('probe')
                     jsonBSSID = restClient.generate_lvap(packet.addr2, constants.DEVICE_NAME)
@@ -39,3 +39,4 @@ def packet_handler(packet):
 def start():
     ## Setup sniff
     sniff(iface=constants.DEVICE_NAME, prn=packet_handler)
+
