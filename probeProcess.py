@@ -15,27 +15,28 @@ def uptime():
 
 
 ## Build Probe Response
-def dot11_probe_resp(destaddr, device):
-    # TODO - make better fields (https://github.com/dinosec/iStupid/blob/master/iStupid.py
-    # TODO - https://github.com/0x90/wifi-scripts/blob/cde03cb610d7fd4ebd55bd8e45063895d1b06526/AP/fuzzap.py)
-
+def dot11_probe_resp(bssid, destaddr, wtpmac, device, sc):
     # Privacy setting on: probe response header
     probresp_header = Dot11ProbeResp(timestamp=uptime(), beacon_interval=constants.BEACON_INTERVAL, \
-                                     cap="short-preamble+short-slot+privacy")
+                                     cap='ESS')
 
     # Rates header
     rates_header = Dot11Elt(ID="Rates", info=constants.RATES)
 
-    probe_response_packet = (RadioTap(present=18479L) /
-                             Dot11(addr2=constants.BSSID, addr3=constants.BSSID, addr1=destaddr, FCfield=8L) /
-                             probresp_header /
-                             Dot11Elt(info=constants.SSID, ID=0) /
-                             Dot11Elt(info=rates_header, ID=1) /
-                             Dot11Elt(info='\x01', ID=3, len=1) /
-                             Dot11Elt(info='\x00', ID=42, len=1) /
-                             Dot11Elt(
-                                 info=constants.RSN,
-                                 ID=48, len=24) /
-                             Dot11Elt(info='H`l', ID=50, len=3))
+    #    probe_response_packet = (RadioTap(present=18479L) /
+    #                             Dot11(addr2=wtpmac, addr3=bssid, addr1=destaddr, FCfield=8L) /
+    #                             probresp_header /
+    #                             Dot11Elt(info=constants.SSID, ID=0) /
+    #                             Dot11Elt(info=rates_header, ID=1) /
+    #                             Dot11Elt(info='\x01', ID=3, len=1) /
+    #                             Dot11Elt(info='\x00', ID=42, len=1) /
+    #                             Dot11Elt(info='H`l', ID=50, len=3))
+
+    probe_response_packet = RadioTap(len=18, present='Flags+Rate+Channel+dBm_AntSignal+Antenna',
+                                     notdecoded='\x00\x6c' + struct.pack("<h", 2484) + '\xc0\x00\xc0\x01\x00\x00') \
+                            / Dot11(subtype=5, addr1=destaddr, addr2=wtpmac, addr3=bssid, SC=sc) \
+                            / Dot11ProbeResp(timestamp=ftime, beacon_interval=0x0064, cap=0x2104) \
+                            / Dot11Elt(ID='SSID', info=constants.SSID) \
+                            / Dot11Elt(ID='Rates', info=constants.RATES)
 
     sendp(probe_response_packet, iface=device, verbose=False)

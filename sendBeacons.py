@@ -11,12 +11,11 @@ def transmitBeacons():
 
     dot11 = Dot11(type=0, subtype=8, addr1=constants.BEACON_ADDR1,
               addr2=constants.BEACON_ADDR2, addr3=constants.BEACON_ADDR3)
-    beacon = Dot11Beacon(cap="short-preamble+short-slot+ESS")
+    beacon = Dot11Beacon(cap='ESS')
     essid = Dot11Elt(ID='SSID', info=netSSID, len=len(netSSID))
-    rsn = Dot11Elt(ID='RSNinfo', info=constants.RSN)  # RSN Capabilities (no extra capabilities)
 
     ## Build the frame
-    frame = RadioTap() / dot11 / beacon / essid / rsn
+    frame = RadioTap() / dot11 / beacon / essid
     frame.show()
 
     ## Print Hex frame
@@ -24,4 +23,4 @@ def transmitBeacons():
     hexdump(frame)
 
     ## Generate frames with interval 0.1 second
-    sendp(frame, iface=device, inter=constants.BEACON_INTERVAL, loop=1)
+    sendp(frame, iface=device, inter=constants.BEACON_INTERVAL, loop=1, verbose=False)

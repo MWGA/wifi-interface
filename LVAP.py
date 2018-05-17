@@ -6,6 +6,13 @@ import constants
 
 lvap_context = []
 
+
+## Get BSSID
+def get_bssid(mac):
+    for lvap in constants.LVAP_CONTEXT:
+        if mac == lvap.MACaddress:
+            return lvap.BSSID
+
 ## IP address validation
 def IPvalid(IP):
     try:

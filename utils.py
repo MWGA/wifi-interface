@@ -2,7 +2,6 @@ from scapy.all import RadioTap, Ether, Raw
 
 import constants
 
-
 ## Add to Ethernet layer as payload
 def addToEth(packet):
     data = packet
@@ -17,3 +16,10 @@ def removeEth(packet):
     dot11payload = packet.getlayer(Raw)
     packetout = RadioTap() / dot11payload
     return packetout
+
+
+def next_sc(sc):
+    sc = (sc + 1) % 4096
+    temp = sc
+
+    return temp * 16  # Fragment number -> right 4 bits
