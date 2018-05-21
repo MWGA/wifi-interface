@@ -7,8 +7,10 @@ BROADCAST_ADDR = 'ff:ff:ff:ff:ff:ff'
 BSSID = 'b8:38:61:99:1a:af'
 
 # Devices
-DEVICE_NAME = 'wlx98ded0056388'
-DEVICE_MAC = '98:de:d0:05:63:88'
+
+DEVICE_NAME = 'wlx0013eff1078b'
+#DEVICE_NAME = 'wlx004f81048a95'
+DEVICE_MAC = 'ee:ee:d0:05:63:88'
 
 TO_OVS_DEVICE = 'veth0'
 IP_SRC = '100.100.100.100'

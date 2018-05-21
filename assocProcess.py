@@ -15,9 +15,8 @@ def uptime():
 
 
 ## Build Auth Response
-def dot11_assoc_resp(device, receiver, sender, bssid):
-    probresp_header = Dot11ProbeResp(timestamp=uptime(), beacon_interval=constants.BEACON_INTERVAL, \
-                                     cap='ESS')
+def dot11_assoc_resp(receiver, sender, bssid):
+    probresp_header = Dot11ProbeResp(timestamp=uptime(), beacon_interval=constants.BEACON_INTERVAL, cap='ESS')
 
     rates_header = Dot11Elt(ID="Rates", info=constants.RATES)
 
@@ -27,5 +26,5 @@ def dot11_assoc_resp(device, receiver, sender, bssid):
                             / Dot11AssoResp(status=0, AID=utils.next_aid(10)) \
                             / rates_header
 
-    sendp(assoc_response_packet, iface=device, verbose=False)
+    sendp(assoc_response_packet, iface=constants.DEVICE_NAME, verbose=False, count=1)
 
