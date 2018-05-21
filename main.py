@@ -5,6 +5,8 @@ import threading
 import packetHandlerFromWiFi
 import sendBeacons
 import restServer
+import subprocess
+import constants
 
 class baconThread (threading.Thread):
    def __init__(self, threadID, name, counter):
@@ -42,6 +44,11 @@ class restThread(threading.Thread):
       restServer.start()
       print "Exiting " + self.name
 
+
+#start and process things, then wait
+print("Enabling monitor mode on " + constants.DEVICE_NAME)
+p = subprocess.Popen("./monitorMode.sh " + constants.DEVICE_NAME, shell=True)
+p.communicate()
 
 thread1 = baconThread(1, "bacon-Thread-1", 1)
 thread2 = wtpThread(2, "wtp-Thread-2", 2)
