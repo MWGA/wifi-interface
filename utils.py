@@ -21,5 +21,9 @@ def removeEth(packet):
 def next_sc(sc):
     sc = (sc + 1) % 4096
     temp = sc
-
     return temp * 16  # Fragment number -> right 4 bits
+
+
+def next_aid(aid):
+    aid = (aid + 1) % 2008
+    return aid
