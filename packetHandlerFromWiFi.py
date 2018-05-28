@@ -8,6 +8,7 @@ import restClient
 import swapHeaders
 import LVAP
 import utils
+import state
 
 ## Handling the packet
 def start():
@@ -16,13 +17,19 @@ def start():
 
 
 def packet_handler(packet):
-    if packet.haslayer(Dot11):  # 802.11
-        if packet.type == 0 and packet.subtype == constants.PROBE_REQ:  # Probe request
-            # if packet.ID == 0:
-            if packet.info == '':
-                print('as ' + packet.addr2)
-                probeProcess.dot11_probe_resp(constants.DEVICE_MAC, packet.addr2, constants.DEVICE_MAC,
-                                              constants.DEVICE_NAME, utils.next_sc(0))
+    if packet.haslayer(Dot11) and packet.addr2 == constants.DEVICE_MAC or packet.addr1 == constants.BROADCAST_ADDR: #packet.haslayer(Dot11):  # 802.11
+        s = state.State()
+
+        if packet.FCfield.retry:
+            s.dropped = s.dropped + 1
+            return
+
+        if packet.haslayer(Dot11ProbeReq):
+
+            if packet.addr1 == constants.BROADCAST_ADDR:  # Active scanning
+                print "as " + str(s.active_scans) + " from " + packet.addr2
+                s.active_scans = s.active_scans + 1
+                probeProcess.dot11_probe_resp(packet.addr2, constants.DEVICE_MAC, utils.next_sc(0))
             elif packet.info == constants.SSID:
                 print('probe ' + packet.addr2)
                 # TODO - change BSSID addr in process

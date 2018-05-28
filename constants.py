@@ -8,7 +8,7 @@ BSSID = 'b8:38:61:99:1a:af'
 
 # Devices
 
-DEVICE_NAME = 'wlx0013eff1078b'
+DEVICE_NAME = 'wlx98ded0054dc9'
 #DEVICE_NAME = 'wlx004f81048a95'
 DEVICE_MAC = 'ee:ee:d0:05:63:88'
 
@@ -24,7 +24,7 @@ DST_PORT = '5000'
 SSID = 'MWGA'
 
 RATES = '\x82\x84\x8b\x16'
-BEACON_INTERVAL = 0.100
+BEACON_INTERVAL = 0.500
 
 # Subtypes
 ASSOC_REQ = 0
