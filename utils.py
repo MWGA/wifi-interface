@@ -1,14 +1,17 @@
-from scapy.all import RadioTap, Ether, Raw
+from scapy.all import *
 
 import constants
 
 ## Add to Ethernet layer as payload
 def addToEth(packet):
-    data = packet
-    ether = Ether(src=constants.MAC_SRC, dst=constants.MAC_DST, type=0x804)
-    payload = Raw(load=data)
-    packetout = ether / payload
-    return packetout
+    try:
+        data = packet.getlayer(SNAP).payload.original
+        ether = Ether(src=packet.addr1, dst=packet.addr2, type=payload_name_to_ethtype(packet.getlayer(SNAP).payload.name))
+        packetout = ether / data
+        return packetout
+    except:
+        return False
+
 
 
 ## Remove Ethernet layer and add Radiotap
@@ -27,3 +30,8 @@ def next_sc(sc):
 def next_aid(aid):
     aid = (aid + 1) % 2008
     return aid
+
+def payload_name_to_ethtype(name):
+    if name == "ARP":
+        return 0x0806
+    raise Exception

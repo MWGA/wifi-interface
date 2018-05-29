@@ -42,8 +42,12 @@ def packet_handler(packet):
             if packet.addr1 == constants.DEVICE_MAC:
                 print ('association')
                 assocProcess.dot11_assoc_resp(constants.DEVICE_NAME, packet.addr2, packet.addr1, packet.addr1)
-        if packet.type == 2:
-            pass
-        if packet.addr1 == constants.DEVICE_MAC:
+
+        if packet.type == 2 and packet.subtype == 0:
             print ('data')
-            # swapHeaders.removeWiFiHeaderAndAddEthernet(packet)
+            p = utils.addToEth(packet)
+            if p is not False:
+                sendp(p, iface=constants.TO_OVS_DEVICE, verbose=False)
+
+        if packet.addr1 == constants.DEVICE_MAC:
+            pass# swapHeaders.removeWiFiHeaderAndAddEthernet(packet)
