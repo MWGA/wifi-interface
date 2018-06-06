@@ -21,8 +21,7 @@ def dot11_assoc_resp(device, receiver, sender, bssid):
 
     rates_header = Dot11Elt(ID="Rates", info=constants.RATES)
 
-    assoc_response_packet = RadioTap(len=18, present='Flags+Rate+Channel+dBm_AntSignal+Antenna',
-                                     notdecoded='\x00\x6c' + struct.pack("<h", 2412) + '\xc0\x00\xc0\x01\x00\x00') \
+    assoc_response_packet = RadioTap() \
                             / Dot11(subtype=0x01, addr2=sender, addr3=bssid, addr1=receiver) \
                             / Dot11AssoResp(status=0, AID=utils.next_aid(10)) \
                             / rates_header

@@ -3,7 +3,7 @@ import requests
 import constants
 from LVAP import LVAP
 
-url = 'http://10.62.45.184:4567/lvap'
+url = 'http://10.62.30.123:4567/lvap'
 
 
 def generate_lvap(mac, wtp):
